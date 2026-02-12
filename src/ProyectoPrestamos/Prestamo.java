@@ -26,7 +26,7 @@ public class Prestamo {
 
     public void registrarDevolucion(LocalDate fechaDevolucion) throws PrestamoInvalidoException {
         if  (fechaDevolucion!=null && (fechaDevolucion.isAfter(this.fechaPrestamo) || fechaDevolucion.isEqual(this.fechaPrestamo)))this.fechaDevolucionReal = fechaDevolucion;
-        else throw new PrestamoInvalidoException("Fecha de devolución inválida");
+            else throw new PrestamoInvalidoException("Fecha de devolución inválida");
     }
 
     public int calcularDiasRetraso(){
@@ -41,4 +41,27 @@ public class Prestamo {
         else if ((ChronoUnit.DAYS.between(fechaDevolucionPrevista, this.fechaDevolucionReal))<0) return 0;
         else return (int)(ChronoUnit.DAYS.between(fechaDevolucionPrevista, this.fechaDevolucionReal));
     }
+
+
+    public boolean estaRetrasado(){
+           if (this.fechaDevolucionReal==null) {
+               return this.calcularDiasRetraso() > 0;
+           }
+           else return false;
+    }
+
+
+    public String  getCodigoLibro() {
+        return codigoLibro;
+    }
+
+
+    @Override
+    public String toString(){
+        return "Código libro: " + this.codigoLibro +
+                "\n\tTítulo libro: " + this.tituloLibro +
+                "\n\tCodigo socio: " + this.socio.getNumeroSocio() +
+                "\n\tFecha de préstamo: " + this.fechaPrestamo +
+                "\n\tFecha devolución prevista: " + this.fechaDevolucionPrevista +
+                "\n\tFecha devolución real: " + this.fechaDevolucionReal;    }
 }

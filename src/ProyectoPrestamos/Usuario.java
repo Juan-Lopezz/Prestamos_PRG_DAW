@@ -62,6 +62,11 @@ public class Usuario {
     }
 
 
+    public String getNumeroSocio() {
+        return numeroSocio;
+    }
+
+
     @Override
     public String toString(){
         return "Nombre: " + this.nombre  + "\n\tEmail: " + this.email + "\n\tNúmero de socio: " + this.numeroSocio + "\n\tFecha de registro: " + this.fechaRegistro + "\n\tEstado de sanción: " + (sancionado==true?"Sancionado," + " Fin de sanción: " + this.fechaFinScancion:"No Sancionado");
