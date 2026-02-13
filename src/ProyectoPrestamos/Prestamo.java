@@ -44,7 +44,7 @@ public class Prestamo {
 
 
     public boolean estaRetrasado(){
-           if (this.fechaDevolucionReal==null) {
+           if (this.fechaDevolucionReal!=null) {
                return this.calcularDiasRetraso() > 0;
            }
            else return false;
@@ -55,6 +55,10 @@ public class Prestamo {
         return codigoLibro;
     }
 
+    public Usuario getSocio() {
+        return socio;
+    }
+
 
     @Override
     public String toString(){
@@ -63,5 +67,5 @@ public class Prestamo {
                 "\n\tCodigo socio: " + this.socio.getNumeroSocio() +
                 "\n\tFecha de préstamo: " + this.fechaPrestamo +
                 "\n\tFecha devolución prevista: " + this.fechaDevolucionPrevista +
-                "\n\tFecha devolución real: " + this.fechaDevolucionReal;    }
+                "\n\tFecha devolución real: " + (this.fechaDevolucionReal == null ? "No devuelto" : this.fechaDevolucionReal);   }
 }

@@ -11,8 +11,12 @@ public class PruebasClases {
             Prestamo p1 = new Prestamo("ABC1234",u1,"wer",LocalDate.now().plusDays(-15)); // solucionar el null pointer exception cuando pasan null en un string para un constructor(catch en el main)
             p1.registrarDevolucion(LocalDate.now().plusDays(12));
             //u1.sancionar(15,LocalDate.now());
-            g.realizarPrestamo("ABC1234","qw",LocalDate.now().plusDays(-15), u1);
             g.registrarUsuario(u1);
+            p1= g.realizarPrestamo("ABC1234","qw",LocalDate.now().plusDays(-14), u1);
+            System.out.println(g.devolverLibro("ABC1234", LocalDate.now().plusDays(1)));
+            System.out.println(g.devolverLibro("ABC1234", LocalDate.now().plusDays(1))); // solucionar
+            System.out.println(u1.estaSancionado());
+            System.out.println("---------------");
             g.registrarUsuario(u2);
             System.out.println(p1.toString());
             System.out.println(p1.calcularDiasRetraso());
