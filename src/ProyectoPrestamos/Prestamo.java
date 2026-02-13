@@ -59,6 +59,10 @@ public class Prestamo {
         return socio;
     }
 
+    public  LocalDate getFechaDevolucionReal() {
+        return fechaDevolucionReal;
+    }
+
 
     @Override
     public String toString(){

@@ -66,6 +66,10 @@ public class Usuario {
         return numeroSocio;
     }
 
+    public LocalDate getFechaFinScancion() {
+        return fechaFinScancion;
+    }
+
 
     @Override
     public String toString(){

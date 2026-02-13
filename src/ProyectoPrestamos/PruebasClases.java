@@ -12,12 +12,19 @@ public class PruebasClases {
             p1.registrarDevolucion(LocalDate.now().plusDays(12));
             //u1.sancionar(15,LocalDate.now());
             g.registrarUsuario(u1);
+            System.out.println("---------------");
+            System.out.println(g.toString());
+            System.out.println("----------------");
+            System.out.println(g.buscarUsuario("SOC12345"));
             p1= g.realizarPrestamo("ABC1234","qw",LocalDate.now().plusDays(-14), u1);
-            System.out.println(g.devolverLibro("ABC1234", LocalDate.now().plusDays(1)));
-            System.out.println(g.devolverLibro("ABC1234", LocalDate.now().plusDays(1))); // solucionar
+            System.out.println(g.devolverLibro("ABC1234", LocalDate.now().plusDays(0)));
+            //p1= g.realizarPrestamo("ABC1234","qw",LocalDate.now().plusDays(-14), u1);
             System.out.println(u1.estaSancionado());
             System.out.println("---------------");
             g.registrarUsuario(u2);
+            System.out.println("---------------");
+            System.out.println(g.toString());
+            System.out.println("----------------");
             System.out.println(p1.toString());
             System.out.println(p1.calcularDiasRetraso());
             System.out.println(p1.estaRetrasado());
@@ -25,23 +32,12 @@ public class PruebasClases {
             System.out.println(u1.toString());
             u1.levantarSancion();
             System.out.println(u1.toString());
-        } catch (UsuarioInvalidoException e) {
-            System.out.println(e.getMessage());
-        }
-        catch (PrestamoInvalidoException e) {
+        } catch (UsuarioInvalidoException | PrestamoInvalidoException | UsuarioRepetidoException |
+                 UsuarioSancionadoException | LibroNoDisponibleException e) {
             System.out.println(e.getMessage());
         }
         catch (NullPointerException e){
             System.out.println("Error inesperado");
-        }
-        catch (UsuarioRepetidoException e){
-            System.out.println(e.getMessage());
-        }
-        catch (UsuarioSancionadoException e){
-            System.out.println(e.getMessage());
-        }
-        catch (LibroNoDisponibleException e){
-            System.out.println(e.getMessage());
         }
     }
 }

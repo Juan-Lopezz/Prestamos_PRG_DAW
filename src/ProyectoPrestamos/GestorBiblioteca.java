@@ -61,7 +61,7 @@ public class GestorBiblioteca {
 
     public boolean devolverLibro(String codigoLibro, LocalDate fechaDevolucion)throws PrestamoInvalidoException{
         for  (int i=0; i<numeroPrestamos; i++) {
-            if (prestamos[i].getCodigoLibro().equals(codigoLibro)) {
+            if (prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolucionReal()==null) {
                 prestamos[i].registrarDevolucion(fechaDevolucion);
                 if (prestamos[i].estaRetrasado()){
                     prestamos[i].getSocio().sancionar(prestamos[i].calcularDiasRetraso(), fechaDevolucion);//Lo sancionamos con el número de días de retraso y desde la fecha de devolución
@@ -70,6 +70,37 @@ public class GestorBiblioteca {
             }else return false;
         }
         return false;
+    }
+
+
+    public Usuario buscarUsuario(String codigoSocio){
+        for   (int i=0; i<numeroUsuarios; i++) {
+            if (usuarios[i].getNumeroSocio().equals(codigoSocio)) {
+                return usuarios[i];
+            }else return null;
+        }
+        return null;
+    }
+
+    public Prestamo[] getPrestamos() {
+        return prestamos;
+    }
+
+    public Usuario[] getUsuarios() {
+        return usuarios;
+    }
+
+    @Override
+    public String toString() {
+        String usuariosString = "";
+        String prestamosString = "";
+        for (int i=0; i<numeroUsuarios; i++) {
+            usuariosString += (usuarios[i].toString() + "\n");
+        }
+        for (int i=0; i<numeroPrestamos; i++) {
+            prestamosString += (prestamos[i].toString() + "\n");
+        }
+        return "Número de usuarios: " + numeroUsuarios + "\n\n" + usuariosString + "\n" +"Número de préstamos: "+ this.numeroPrestamos + "\n\n" +  prestamosString;
     }
 }
 
