@@ -1,6 +1,7 @@
 package ProyectoPrestamos;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
@@ -19,6 +20,11 @@ public class Funciones {
         String[] fechas;
         fechas = fecha.split("/");
         return parseInt(fechas[2]);
+    }
+    public static void parada(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("into para continuar");
+        in.nextLine();
     }
     
 }

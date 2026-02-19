@@ -1,5 +1,6 @@
 package ProyectoPrestamos;
 
+import java.sql.SQLOutput;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -45,10 +46,8 @@ public class MainPrestamos {
                         usuario = new Usuario(nombre, email, numsoc, fechaRegistro);
                         biblioteca.registrarUsuario(usuario);
                         }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println(e.getMessage());
                             System.out.println("Fecha de registro inválida");
-                            System.out.println("into para continuar");
-                            in.nextLine();
+                            Funciones.parada();
                         }
                         System.out.println("Usuario correctamente registrado");
                         break;
@@ -74,7 +73,7 @@ public class MainPrestamos {
                                    if(numeroSocio.equals(biblioteca.getUsuarios()[i].getNumeroSocio())){
                                        usuarioPrestamo = biblioteca.getUsuarios()[i];
                                    }
-                               }else break;
+                               }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
                             }
                             if (usuarioPrestamo == null){
                                 throw new UsuarioInvalidoException("Usuario no encontrado");
@@ -83,17 +82,15 @@ public class MainPrestamos {
                             System.out.println("Prestamo realizado");
                             System.out.println("Devolución prevista: " + fechaPrestamo.plusDays(14));
                         }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println(e.getMessage());
                             System.out.println("Fecha de préstamo inválida");
-                            System.out.println("into para continuar");
-                            in.nextLine();
+                            Funciones.parada();
                         }catch (UsuarioInvalidoException e) {
                             System.out.println(e.getMessage());
-                            System.out.println("into para continuar");
-                            in.nextLine();
+                            Funciones.parada();
                         }
                         break;
                     case "3":
+
                         String codigoLibro1;
                         String fecha2;
                         LocalDate fechaDevolucion;
@@ -105,22 +102,54 @@ public class MainPrestamos {
                             fechaDevolucion = LocalDate.of(Funciones.getAnio(fecha2), Funciones.getMes(fecha2), Funciones.getDia(fecha2));
                             biblioteca.devolverLibro(codigoLibro1, fechaDevolucion);
                             System.out.println("Devolución realizada");
-                            for (int i =0; i<biblioteca.getPrestamos().length; i++){}
+                            for (int i =0; i<biblioteca.getPrestamos().length; i++){
+                                if (biblioteca.getPrestamos()[i] != null){
+                                    if (biblioteca.getPrestamos()[i].getCodigoLibro().equals(codigoLibro1)) {
+                                        System.out.println("Devolución realizada con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días de retraso");
+                                        System.out.println("Usuario sancionado con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días");
+                                    }
+                                }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                            }
                         }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println(e.getMessage());
-                            System.out.println("Fecha de registro inválida");
-                            System.out.println("into para continuar");
-                            in.nextLine();
+                            System.out.println("Fecha de devolución inválida");
+                            Funciones.parada();
                         }
                         break;
                     case "4":
-                        System.out.println("Consultar estado de usuario");
+                        String numeroSocio1;
+                        System.out.println("Número de socio: ");
+                        numeroSocio1 = in.nextLine();
+                        for (int i =0; i<biblioteca.getUsuarios().length; i++){
+                            if  (biblioteca.getUsuarios()[i] != null){
+                                if (biblioteca.getUsuarios()[i].getNumeroSocio().equals(numeroSocio1)){
+                                    System.out.println(biblioteca.getUsuarios()[i].estaSancionado() ? "Está sancionado" : "No está sancionado");
+                                }
+                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                        }
+                        Funciones.parada();
                         break;
                     case "5":
-                        System.out.println("Mostrar préstamos activos");
+                        Prestamo[] prestamos;
+                        prestamos = biblioteca.getPrestamos();
+                        for (int i =0; i<prestamos.length; i++){
+                            if (prestamos[i] != null){
+                                if (prestamos[i].getFechaDevolucionReal()!=null) {
+                                    System.out.println(prestamos[i].toString());
+                                }
+                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                        }
+                        Funciones.parada();
                         break;
                     case "6":
-                        System.out.println("Mostrar usuarios sancionados");
+                        System.out.println("Sancionados: ");
+                        for (int i =0; i<biblioteca.getUsuarios().length; i++) {
+                            if (biblioteca.getUsuarios()[i] != null) {
+                                if (biblioteca.getUsuarios()[i].estaSancionado()){
+                                    System.out.println(biblioteca.getUsuarios()[i].toString());
+                                }
+                            }
+                        }
+                        Funciones.parada();
                         break;
                     case "7":
                         System.out.println("Actualizar sanciones");
@@ -132,9 +161,9 @@ public class MainPrestamos {
                         System.out.println("Opción no válida");
                 }
                 } catch (Exception e) {
+                    /*System.out.println("Error inesperado \n Código de error:");*/
                     System.out.println(e.getMessage());
-                    System.out.println("into para continuar");
-                    in.nextLine();
+                    Funciones.parada();
                 }
             } while (!respuesta.equals("8"));
     }
