@@ -10,6 +10,10 @@ public class GestorBiblioteca {
     private int numeroUsuarios;
     private int numeroPrestamos;
 
+    /**
+     * Constructor de la clase GestorBiblioteca
+     * Inicializa los arrays de usuarios y préstamos con sus capacidades máximas y pone los contadores a cero
+     */
     public GestorBiblioteca() {
         usuarios = new Usuario[MAX_USUARIOS];
         prestamos = new Prestamo[MAX_PRESTAMOS];
@@ -17,6 +21,11 @@ public class GestorBiblioteca {
         numeroPrestamos=0;
     }
 
+    /**
+     * Metodo para registrar un nuevo usuario en la biblioteca
+     * @param usuario Objeto Usuario que se desea dar de alta en el sistema
+     * @throws UsuarioRepetidoException lanza una excepción si el objeto usuario ya existe o si ya hay un usuario con el mismo número de socio registrado
+     */
     public void registrarUsuario(Usuario usuario) throws UsuarioRepetidoException{
         for (int i=0; i<numeroUsuarios; i++) {
             if (usuarios[i]==usuario) {
@@ -31,7 +40,17 @@ public class GestorBiblioteca {
 
     }
 
-
+    /**
+     * Metodo para gestionar la realización de un préstamo de un libro a un usuario
+     * @param codigoLibro String que identifica el código único del libro
+     * @param tituloLibro String que recoge el título del libro prestado
+     * @param fechaPrestamo LocalDate indicando la fecha en la que se realiza el préstamo
+     * @param usuario Objeto Usuario que solicita el libro
+     * @return Prestamo objeto que contiene la información del préstamo realizado
+     * @throws UsuarioSancionadoException lanza una excepción cuando el usuario tiene una sanción activa
+     * @throws LibroNoDisponibleException lanza una excepción cuando el libro ya se encuentra en posesión de otro usuario
+     * @throws PrestamoInvalidoException lanza una excepción si el usuario que intenta coger el libro no está registrado
+     */
     public Prestamo realizarPrestamo(String codigoLibro, String tituloLibro, LocalDate fechaPrestamo, Usuario usuario)throws UsuarioSancionadoException, LibroNoDisponibleException, PrestamoInvalidoException {
         int validadorDeEstado=0;
         for  (int i=0; i<numeroUsuarios; i++) {
@@ -58,7 +77,13 @@ public class GestorBiblioteca {
         }
     }
 
-
+    /**
+     * Metodo para registrar la devolución de un libro y gestionar las posibles sanciones por retraso
+     * @param codigoLibro String con el identificador del libro a devolver
+     * @param fechaDevolucion LocalDate con la fecha real en la que se entrega el libro
+     * @return boolean que indica true si el libro se ha devuelto correctamente o false si no se encuentra el préstamo
+     * @throws PrestamoInvalidoException lanza una excepción si ocurre un error en la validación de los datos del préstamo
+     */
     public boolean devolverLibro(String codigoLibro, LocalDate fechaDevolucion)throws PrestamoInvalidoException{
         for  (int i=0; i<numeroPrestamos; i++) {
             if (prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolucionReal()==null) {
@@ -72,7 +97,11 @@ public class GestorBiblioteca {
         return false;
     }
 
-
+    /**
+     * Metodo para localizar un usuario dentro del sistema mediante su código de socio
+     * @param codigoSocio String que representa el identificador único del socio a buscar
+     * @return Usuario el objeto buscado si se encuentra en el array, o null si no existe
+     */
     public Usuario buscarUsuario(String codigoSocio){
         for   (int i=0; i<numeroUsuarios; i++) {
             if (usuarios[i].getNumeroSocio().equals(codigoSocio)) {
