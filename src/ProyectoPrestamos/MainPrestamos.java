@@ -90,7 +90,7 @@ public class MainPrestamos {
                             System.out.println("Devolución realizada");
                             for (int i =0; i<biblioteca.getPrestamos().length; i++){
                                 if (biblioteca.getPrestamos()[i] != null){
-                                    if (biblioteca.getPrestamos()[i].getCodigoLibro().equals(codigoLibro1) && biblioteca.getPrestamos()[i].getFechaDevolucionReal()==null) {
+                                    if (biblioteca.getPrestamos()[i].getCodigoLibro().equals(codigoLibro1) && biblioteca.getPrestamos()[i].getFechaDevolucionReal().equals(fechaDevolucion) ) {
                                         System.out.println("Devolución realizada con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días de retraso");
                                         System.out.println("Usuario sancionado con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días");
                                     }
