@@ -22,7 +22,7 @@ public class Usuario {
     public Usuario (String nombre, String email, String numeroSocio, LocalDate fechaRegistro) throws  UsuarioInvalidoException{
         this.nombre = nombre;
         if (email.matches(".+@.+\\..+"))this.email = email;
-        else throw new UsuarioInvalidoException("Email incorrecto, debe contener '@' y '.'");
+        else throw new UsuarioInvalidoException("Email incorrecto, debe cumplir el formato '---@---.---'");
         if (numeroSocio.matches("SOC[0-9]{5}"))this.numeroSocio = numeroSocio;
         else throw new UsuarioInvalidoException("Número de Socio incorrecto, debe contener 'SOC' seguido de 5 dígitos");
         this.fechaRegistro = fechaRegistro;
@@ -37,9 +37,13 @@ public class Usuario {
      * @param fechaInicioSancion LocalDate con la fecha de cuando ha iniciado la sancion
      */
     public void sancionar(int diasSancion, LocalDate fechaInicioSancion){
-        LocalDate fechaFinSanc =  LocalDate.now().plusDays(diasSancion);
-        this.sancionado = true;
-        this.fechaFinScancion = fechaFinSanc;
+        if (this.sancionado==false) {
+            LocalDate fechaFinSanc = fechaInicioSancion.plusDays(diasSancion);
+            this.sancionado = true;
+            this.fechaFinScancion = fechaFinSanc;
+        }else {
+            this.fechaFinScancion = this.fechaFinScancion.plusDays(diasSancion);
+        }
     }
 
 

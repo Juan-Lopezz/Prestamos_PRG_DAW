@@ -67,7 +67,7 @@ public class MainPrestamos {
                                    if(numeroSocio.equals(biblioteca.getUsuarios()[i].getNumeroSocio())){
                                        usuarioPrestamo = biblioteca.getUsuarios()[i];
                                    }
-                               }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                               }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null y no puede ver atributos ni usar metodos de objetos que son nulos
                             }
                             if (usuarioPrestamo == null){
                                 throw new UsuarioInvalidoException("Usuario no encontrado");
@@ -90,11 +90,11 @@ public class MainPrestamos {
                             System.out.println("Devolución realizada");
                             for (int i =0; i<biblioteca.getPrestamos().length; i++){
                                 if (biblioteca.getPrestamos()[i] != null){
-                                    if (biblioteca.getPrestamos()[i].getCodigoLibro().equals(codigoLibro1)) {
+                                    if (biblioteca.getPrestamos()[i].getCodigoLibro().equals(codigoLibro1) && biblioteca.getPrestamos()[i].getFechaDevolucionReal()==null) {
                                         System.out.println("Devolución realizada con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días de retraso");
                                         System.out.println("Usuario sancionado con " + biblioteca.getPrestamos()[i].calcularDiasRetraso() + " días");
                                     }
-                                }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                                }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null y no puede ver atributos ni usar metodos de objetos que son nulos
                             }
                         break;
                     case "4":
@@ -106,7 +106,7 @@ public class MainPrestamos {
                                 if (biblioteca.getUsuarios()[i].getNumeroSocio().equals(numeroSocio1)){
                                     System.out.println(biblioteca.getUsuarios()[i].estaSancionado() ? "Está sancionado" : "No está sancionado");
                                 }
-                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null y no puede ver atributos ni usar metodos de objetos que son nulos
                         }
                         Funciones.parada();
                         break;
@@ -119,7 +119,7 @@ public class MainPrestamos {
                                 if (prestamos[i].getFechaDevolucionReal()==null) {
                                     System.out.println(prestamos[i].toString());
                                 }
-                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
+                            }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null y no puede ver atributos ni usar metodos de objetos que son nulos
                         }
                         Funciones.parada();
                         break;
@@ -135,7 +135,16 @@ public class MainPrestamos {
                         Funciones.parada();
                         break;
                     case "7":
-                        System.out.println("Actualizar sanciones");
+                        System.out.println("Sanciones actualizadas");
+                        for  (int i =0; i<biblioteca.getUsuarios().length; i++) {
+                            if  (biblioteca.getUsuarios()[i] != null) {
+                                if (biblioteca.getUsuarios()[i].estaSancionado()){
+                                    if(biblioteca.getUsuarios()[i].getFechaFinScancion().isBefore(LocalDate.now())){
+                                        biblioteca.getUsuarios()[i].levantarSancion();
+                                    }
+                                }
+                            }else  break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null y no puede ver atributos ni usar metodos de objetos que son nulos
+                        }
                         break;
                     case "8":
                         System.out.println("Saliendo del sistema...");
@@ -143,8 +152,12 @@ public class MainPrestamos {
                     default:
                         System.out.println("Opción no válida");
                 }
-                } catch (Exception e) {
-                    /*System.out.println("Error inesperado \n Código de error:");*/
+                } catch(LibroNoDisponibleException | PrestamoInvalidoException | UsuarioInvalidoException | UsuarioSancionadoException | UsuarioRepetidoException | DateTimeException e){
+                    System.out.println(e.getMessage());
+                    Funciones.parada();
+                }
+                catch (Exception e) {
+                    System.out.println("Error inesperado \n Código de error:");
                     System.out.println(e.getMessage());
                     Funciones.parada();
                 }
