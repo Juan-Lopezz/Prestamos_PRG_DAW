@@ -26,7 +26,7 @@ public class Prestamo {
         if (!(tituloLibro.isEmpty()) && tituloLibro.matches(".+"))this.tituloLibro = tituloLibro;
             else throw new PrestamoInvalidoException("El libro debe contener un título");
         if (fechaPrestamo!=null && (fechaPrestamo.isBefore(LocalDate.now()) || fechaPrestamo.isEqual(LocalDate.now())))this.fechaPrestamo = fechaPrestamo;
-            else throw new PrestamoInvalidoException("Fecha de préstamo ds inválida");
+            else throw new PrestamoInvalidoException("Fecha de préstamo de inválida, no puede ser posterior al día actual");
         this.fechaDevolucionPrevista = fechaPrestamo.plusDays(14);
     }
 

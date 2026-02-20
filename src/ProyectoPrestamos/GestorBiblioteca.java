@@ -67,7 +67,7 @@ public class GestorBiblioteca {
         }
         else {
             for  (int i=0; i<numeroPrestamos; i++) {
-                if (prestamos[i].getCodigoLibro().equals(codigoLibro)) {
+                if (prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolucionReal()==null) {
                     throw  new LibroNoDisponibleException("Libro ya prestado");
                 }
             }
@@ -92,7 +92,7 @@ public class GestorBiblioteca {
                     prestamos[i].getSocio().sancionar(prestamos[i].calcularDiasRetraso(), fechaDevolucion);//Lo sancionamos con el número de días de retraso y desde la fecha de devolución
                 }
                 return true;
-            }else return false;
+            }
         }
         return false;
     }

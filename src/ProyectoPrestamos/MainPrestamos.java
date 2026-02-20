@@ -39,16 +39,11 @@ public class MainPrestamos {
                         email = in.nextLine();
                         System.out.println("Número de socio: ");
                         numsoc = in.nextLine();
-                        try {
                             System.out.println("Fecha registro (dd/mm/aaaa): ");
                             fecha = in.nextLine();
                         fechaRegistro = LocalDate.of(Funciones.getAnio(fecha), Funciones.getMes(fecha), Funciones.getDia(fecha));
                         usuario = new Usuario(nombre, email, numsoc, fechaRegistro);
                         biblioteca.registrarUsuario(usuario);
-                        }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println("Fecha de registro inválida");
-                            Funciones.parada();
-                        }
                         System.out.println("Usuario correctamente registrado");
                         break;
                     case "2":
@@ -64,7 +59,6 @@ public class MainPrestamos {
                         titulo = in.nextLine();
                         System.out.println("Número de socio: ");
                         numeroSocio = in.nextLine();
-                        try {
                             System.out.println("Fecha prestamo (dd/mm/aaaa): ");
                             fecha1 = in.nextLine();
                             fechaPrestamo = LocalDate.of(Funciones.getAnio(fecha1), Funciones.getMes(fecha1), Funciones.getDia(fecha1));
@@ -81,13 +75,6 @@ public class MainPrestamos {
                             biblioteca.realizarPrestamo(codigoLibro, titulo, fechaPrestamo, usuarioPrestamo);
                             System.out.println("Prestamo realizado");
                             System.out.println("Devolución prevista: " + fechaPrestamo.plusDays(14));
-                        }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println("Fecha de préstamo inválida");
-                            Funciones.parada();
-                        }catch (UsuarioInvalidoException e) {
-                            System.out.println(e.getMessage());
-                            Funciones.parada();
-                        }
                         break;
                     case "3":
 
@@ -96,7 +83,6 @@ public class MainPrestamos {
                         LocalDate fechaDevolucion;
                         System.out.println("Código de libro: ");
                         codigoLibro1 = in.nextLine();
-                        try {
                             System.out.println("Fecha de devolución: ");
                             fecha2 = in.nextLine();
                             fechaDevolucion = LocalDate.of(Funciones.getAnio(fecha2), Funciones.getMes(fecha2), Funciones.getDia(fecha2));
@@ -110,10 +96,6 @@ public class MainPrestamos {
                                     }
                                 }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
                             }
-                        }catch(IndexOutOfBoundsException | DateTimeException e) {
-                            System.out.println("Fecha de devolución inválida");
-                            Funciones.parada();
-                        }
                         break;
                     case "4":
                         String numeroSocio1;
@@ -131,9 +113,10 @@ public class MainPrestamos {
                     case "5":
                         Prestamo[] prestamos;
                         prestamos = biblioteca.getPrestamos();
+                        System.out.println("Prestamos activos: ");
                         for (int i =0; i<prestamos.length; i++){
                             if (prestamos[i] != null){
-                                if (prestamos[i].getFechaDevolucionReal()!=null) {
+                                if (prestamos[i].getFechaDevolucionReal()==null) {
                                     System.out.println(prestamos[i].toString());
                                 }
                             }else break; // parada para que deje de mirar en el resto del array porque a partir de que encuentra un null el resto están a null
